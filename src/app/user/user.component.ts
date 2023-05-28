@@ -9,17 +9,23 @@ import { Address, User } from './user.model/User.model';
 export class UserComponent implements OnInit {
 
   users:User[] =[];
-  fullName:string = '';
+  fullName:string = '+91';
   userEmail:string = '';
-  userCell:string='';
-  line1:string=''
-  line2:string=''
-  pin:number=0;
-  message:string =''
-
-  constructor() {}
+  userCell:string = '';
+  line1:string ='';
+  line2:string = '';
+  pin:number = 0;
+  message:string ='';
+  isDisabled:boolean = false;
+  isActiveButton:boolean = true;
+  
+  constructor() {
+    this.deafultValue();
+  }
 
   ngOnInit(): void {}
+
+
 
   saveOrUpdate():void{
     let userObject:User = {
@@ -35,8 +41,48 @@ export class UserComponent implements OnInit {
     } as User;
 
     this.users.push(userObject);
-
+    
+     this.deafultValue();
   }
 
+  deafultValue():void{
+    this.fullName = '';
+    this.userEmail = '';
+    this.userCell='+91 ';
+    this.line1='';
+    this.line2='';
+    this.pin=0;
+    this.message ='';
+  }
+ 
+  updateRecord(user:User):void{
+    this.fullName = user.userName;
+    this.userEmail = user.userEmail;
+    this.userCell=user.cellNumber;
+    this.line1= user.address.line1;
+    this.line2=user.address.line2;
+    this.pin= user.address.pin
+    this.message =user.message;
+
+    this.isDisabled = true;
+    this.isActiveButton = false;
+  }
+
+  removeRecord(mailId:string):void{
+    
+    let updatedArray:User[] = [];
+
+    for(let i = 0; i< this.users.length; i++){
+       if(this.users[i].userEmail != mailId){
+        updatedArray.push(this.users[i]);
+       }
+    }
+
+    this.users = updatedArray;
+
+  }
   
+  updateButton():void{
+
+  }
 }
