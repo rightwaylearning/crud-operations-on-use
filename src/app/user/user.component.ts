@@ -28,21 +28,25 @@ export class UserComponent implements OnInit {
 
 
   saveOrUpdate():void{
-    let userObject:User = {
-      userName:this.fullName,
-      userEmail:this.userEmail,
-      cellNumber:this.userCell,
-      address :{
-        line1:this.line1,
-        line2:this.line2,
-        pin:this.pin
-      } as Address,
-      message:this.message
-    } as User;
-
-    this.users.push(userObject);
-    
-     this.deafultValue();
+     if(this.isEmailExist(this.userEmail)){
+        alert("Email id is duplicate , please change it!!");
+     }else{
+      let userObject:User = {
+        userName:this.fullName,
+        userEmail:this.userEmail,
+        cellNumber:this.userCell,
+        address :{
+          line1:this.line1,
+          line2:this.line2,
+          pin:this.pin
+        } as Address,
+        message:this.message
+      } as User;
+  
+      this.users.push(userObject);
+      
+       this.deafultValue();
+     }
   }
 
   deafultValue():void{
@@ -83,6 +87,43 @@ export class UserComponent implements OnInit {
   }
   
   updateButton():void{
+    let updatedUserObject:User = {
+      userName:this.fullName,
+      userEmail:this.userEmail,
+      cellNumber:this.userCell,
+      address :{
+        line1:this.line1,
+        line2:this.line2,
+        pin:this.pin
+      } as Address,
+      message:this.message
+    } as User;
+
+
+    for(let i = 0; i< this.users.length; i++){
+      if(this.users[i].userEmail == this.userEmail){
+        this.users[i] = updatedUserObject;
+
+        this.isDisabled = false;
+        this.isActiveButton = true;
+        this.deafultValue();
+        break;
+      }
+
+      
+     
+   }
 
   }
+
+  isEmailExist(emailId:string):boolean{
+    for(let i = 0; i< this.users.length; i++){
+      if(this.users[i].userEmail == emailId){
+       return true;
+        break;
+      }
+    }
+    return false;
+  }
+
 }
